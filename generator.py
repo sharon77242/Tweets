@@ -28,6 +28,8 @@ def generate(model, start_string, temperature, max_len):
         str += new_c
     return str
 	
+tweetsDictionary = {}
+
 print ("Loading now model and lang file.")
 
 with open('lang.pickle', 'rb') as langFile:
@@ -39,4 +41,15 @@ with open('model.pickle', 'rb') as modelFile:
 print ("Loaded model and lang file successfully.")
 	
 for i in range(200):
-    print generate(model, 'i am at ', 0.8, 200)
+    tweetGenerated = generate(model, 'i am at ', 0.8, 200)	
+	tweetsDictionary[tweetGenerated] = tweetGenerated[tweetGenerated] + 1
+
+	# this is hurani. it can be changed with some kind of algorithm
+maxValue = 0
+
+for key, value in tweetsDictionary.items():
+    if (value > maxValue):
+		value = maxValue
+		bestTweet = key
+
+print bestTweet	
