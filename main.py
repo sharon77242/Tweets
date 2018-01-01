@@ -132,9 +132,9 @@ for e in range(1, n_epochs + 1):
 print ("Saving now model and lang file.")
 
 with open('lang.pickle', 'wb') as langFile:
-    pickle.dump(lang, f)
+    pickle.dump(lang, langFile)
 	
 with open('model.pickle', 'wb') as modelFile:
-    pickle.dump(model, f)
+    pickle.dump(model, modelFile)
 	
 print ("Saved model and lang file successfully.")
