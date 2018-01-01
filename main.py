@@ -8,7 +8,7 @@ import pickle
 
 def read_data():
     #lines = open('data/eng-heb.txt').read().strip().split('\n')
-    lines = open('notebooks/newtweet.txt').read().strip().split('\n')
+    lines = open('TWEETS NEW YORK 2017_12_24 18 24 00.txt').read().strip().split('\n')
     english_lines = [l.split('\t')[0].lower().strip() for l in lines]
     return english_lines
 
@@ -88,7 +88,7 @@ class TextGen(nn.Module):
                 Variable(torch.zeros(self.n_layers, 1, self.hidden_size)))
     
 hidden_size = 800
-n_layers = 4
+n_layers = 3
 
 model = TextGen(lang.n_chars, hidden_size, lang.n_chars, 1)
 
