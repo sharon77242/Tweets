@@ -8,20 +8,25 @@ from http.client import IncompleteRead
 import time
 
 # Twitter API credentials
-consumer_key = "zBlIrsX4n5c1Z43FxsKFGJITY"
-consumer_secret = "s4NniXqLAbjTtDdPKBvRtDPTUbvRSScX7UvXqLNKRAHQrPingc"
-access_key = "931836587142537216-hjJ0SkbYLM8HjZRmY5gaTycaBEHfUB4"
-access_secret = "zbhC62mh7mR9ioilqinajIHE2lXJ0dpNfI1YYZuC1jav7"
+c_consumer_key = "zBlIrsX4n5c1Z43FxsKFGJITY"
+c_consumer_secret = "s4NniXqLAbjTtDdPKBvRtDPTUbvRSScX7UvXqLNKRAHQrPingc"
+c_access_key = "931836587142537216-hjJ0SkbYLM8HjZRmY5gaTycaBEHfUB4"
+c_access_secret = "zbhC62mh7mR9ioilqinajIHE2lXJ0dpNfI1YYZuC1jav7"
 
-locations_new_york = ['NYC', ' NY', "NEW YORK"]
+c_new_york = 'new york'
+c_locations_new_york = [c_new_york, 'nyc', ' ny']
 
-text = 'text'
-user = 'user'
-location = 'location'
-place = 'place'
-full_name = 'full_name'
-tweets = 'TWEETS'
-t_end = ''
+c_los_angeles = 'los angeles'
+c_locations_los_angeles = [c_los_angeles, ', la']
+
+c_text = 'text'
+c_user = 'user'
+c_location = 'location'
+c_place = 'place'
+c_full_name = 'full_name'
+c_tweets = 'tweets'
+time_end = ''
+c_txts = 'txts'
 
 
 class Listener(StreamListener):
@@ -46,37 +51,36 @@ class Listener(StreamListener):
         return tweet
 
     def write_tweet_to_file(self):
-        # print('original tweet:', self._tweet)
+        print('original tweet:', self._tweet)
         self._tweet = self.remove_garbage(self._tweet)
-        # print('after garbage remove:', self._tweet)
-        # print('')
+        print('after garbage remove:', self._tweet)
+        print('')
         self._file.write(self._tweet + '\n')
 
     def location_exists(self, curr_location):
-        if self._locations[0] in curr_location or \
-                self._locations[1] in curr_location or \
-                self._locations[2] in curr_location.upper():
-            return True
+        for location in self._locations:
+            if location in curr_location :
+                return True
         return False
 
     def handle_tweet(self, data):
         all_data = json.loads(data)
-        if text in all_data:
-            self._tweet = all_data[text]
-            if all_data[user] and all_data[user][location]:
-                user_location = all_data[user][location]
+        if c_text in all_data:
+            self._tweet = all_data[c_text]
+            if all_data[c_user] and all_data[c_user][c_location]:
+                user_location = all_data[c_user][c_location].lower()
                 if self.location_exists(user_location):
-                    # print ('user_location:', user_location)
+                    print ('user_location:', user_location)
                     self.write_tweet_to_file()
 
-            elif all_data[place] and all_data[place][full_name]:
-                curr_location = all_data[place][full_name]
+            elif all_data[c_place] and all_data[c_place][c_full_name]:
+                curr_location = all_data[c_place][c_full_name].lower()
                 if self.location_exists(curr_location):
-                    # print('curr_location:', location)
+                    print('curr_location:', curr_location)
                     self.write_tweet_to_file()
 
     def on_data(self, data):
-        if time.time() < t_end:
+        if time.time() < time_end:
             self.handle_tweet(data)
             return True
         return False
@@ -86,15 +90,19 @@ class Listener(StreamListener):
 
 
 if __name__ == '__main__':
-    auth = OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_key, access_secret)
+    auth = OAuthHandler(c_consumer_key, c_consumer_secret)
+    auth.set_access_token(c_access_key, c_access_secret)
 
     date = datetime.datetime.now().strftime("%Y_%m_%d %H %M %S")
-    t_end = time.time() + 60 * 60
-    with open(tweets + ' ' + locations_new_york[2] + ' ' + date + '.txt', 'a', encoding='utf-8') as file:
-        while time.time() < t_end:
+    time_end = time.time() + 60 * 60
+
+    current_location = c_locations_los_angeles
+    file_name = c_txts + '/' + c_tweets + ' ' + c_los_angeles + ' ' + date + '.txt'
+
+    with open(file_name, 'a', encoding='utf-8') as file:
+        while time.time() < time_end:
             try:
-                twitterStream = Stream(auth, Listener(file, locations_new_york))
+                twitterStream = Stream(auth, Listener(file, current_location))
                 twitterStream.filter(languages=["en"], locations=[-180, -90, 180, 90])
             except IncompleteRead:
                 # Oh well, reconnect and keep trucking
