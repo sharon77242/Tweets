@@ -100,7 +100,7 @@ if __name__ == '__main__':
     auth.set_access_token(c_access_key, c_access_secret)
 
     date = datetime.datetime.now().strftime("%Y_%m_%d %H %M %S")
-    time_end = time.time() + 60 * 60
+    time_end = time.time() + 60 * 120
 
     file_name = c_txts + '/' + c_tweets + ' ' + current_location[0] + ' ' + date + '.txt'
 
