@@ -19,6 +19,11 @@ c_locations_new_york = [c_new_york, 'nyc', ' ny']
 c_los_angeles = 'los angeles'
 c_locations_los_angeles = [c_los_angeles, ', la']
 
+c_california = 'california'
+c_locations_california = [c_california, ', ca ']
+
+current_location = c_locations_california
+
 c_text = 'text'
 c_user = 'user'
 c_location = 'location'
@@ -66,17 +71,18 @@ class Listener(StreamListener):
     def handle_tweet(self, data):
         all_data = json.loads(data)
         if c_text in all_data:
-            self._tweet = all_data[c_text]
             if all_data[c_user] and all_data[c_user][c_location]:
                 user_location = all_data[c_user][c_location].lower()
                 if self.location_exists(user_location):
-                    print ('user_location:', user_location)
+                    print('user_location:', user_location)
+                    self._tweet = all_data[c_text]
                     self.write_tweet_to_file()
 
             elif all_data[c_place] and all_data[c_place][c_full_name]:
                 curr_location = all_data[c_place][c_full_name].lower()
                 if self.location_exists(curr_location):
                     print('curr_location:', curr_location)
+                    self._tweet = all_data[c_text]
                     self.write_tweet_to_file()
 
     def on_data(self, data):
@@ -96,8 +102,7 @@ if __name__ == '__main__':
     date = datetime.datetime.now().strftime("%Y_%m_%d %H %M %S")
     time_end = time.time() + 60 * 60
 
-    current_location = c_locations_los_angeles
-    file_name = c_txts + '/' + c_tweets + ' ' + c_los_angeles + ' ' + date + '.txt'
+    file_name = c_txts + '/' + c_tweets + ' ' + current_location[0] + ' ' + date + '.txt'
 
     with open(file_name, 'a', encoding='utf-8') as file:
         while time.time() < time_end:
