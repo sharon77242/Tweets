@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import torch
 from torch import nn, autograd, optim
 from torch.autograd import Variable
@@ -9,13 +8,11 @@ class Lang:
         self.id2char = {}
         self.char2count = {}
         self.n_chars = 1
-        
-        
+               
     def index_sentence(self, sentence):
         for c in sentence:
             self.index_char(c)
         
-    
     def index_char(self, c):
         if c not in self.char2id:
             self.char2id[c] = self.n_chars
@@ -33,7 +30,7 @@ class TextGen(nn.Module):
         self.output_size = output_size
         self.n_layers = n_layers
         
-        self.embedding = nn.Embedding(input_size, hidden_size)
+        self.embedding = nn.Embedding(input_size, hidden_size).cuda()
         self.lstm = nn.LSTM(hidden_size, hidden_size, n_layers)
         self.out = nn.Linear(hidden_size, output_size)
     
@@ -45,5 +42,5 @@ class TextGen(nn.Module):
         return output, hidden
     
     def init_hidden(self):
-        return (Variable(torch.zeros(self.n_layers, 1, self.hidden_size)),
-                Variable(torch.zeros(self.n_layers, 1, self.hidden_size)))
+        return (Variable(torch.zeros(self.n_layers, 1, self.hidden_size).cuda()),
+                Variable(torch.zeros(self.n_layers, 1, self.hidden_size).cuda()))

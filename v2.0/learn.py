@@ -1,11 +1,10 @@
-#!/usr/bin/python
 import torch
 import numpy as np
 from torch import nn, autograd, optim
 from torch.autograd import Variable
 import torch.nn.functional as F
 import random
-import classes
+from classes import *
 import pickle
 import glob
 import os
@@ -13,7 +12,7 @@ import sys
 
 def read_data(fileNamePath): 
     #lines = open('data/eng-heb.txt').read().strip().split('\n')
-	lines = open(fileNamePath).read().strip().split('\n')
+	lines = open(fileNamePath, encoding="utf8").read().strip().split('\n')
 	english_lines = [l.split('\t')[0].lower().strip() for l in lines]
 	return english_lines
 
@@ -24,15 +23,15 @@ def prepare_data(data):
             lang.index_sentence(sentence)
     return lang
 
-def sentence2variable(sentence):
+def sentence2variable(sentence, lang):
     indexes = [lang.char2id[c] for c in sentence]
-    input_var = Variable(torch.LongTensor(indexes).view(-1, 1))
+    input_var = Variable(torch.LongTensor(indexes).view(-1, 1).cuda())
     indexes.append(EOS_TOKEN)
-    target_var = Variable(torch.LongTensor(indexes[1:]).view(-1, 1))
+    target_var = Variable(torch.LongTensor(indexes[1:]).view(-1, 1).cuda())
     return input_var, target_var
 
-def data2variables(data):
-    variables = [sentence2variable(s) for s in data if len(s) <= MAX_SEQ_LEN]
+def data2variables(data, lang):
+    variables = [sentence2variable(s, lang) for s in data if len(s) <= MAX_SEQ_LEN]
     return variables
     
 def train_seq(model, optimizer, criterion, input_var, target_var):
@@ -58,14 +57,15 @@ def start(fileName):
 	langFileNamePath = 'models/' + os.path.basename(langFileName).replace('.txt', '.pickle')
 	
 	data = read_data(fileName)
-	print random.choice(data)
+	print (random.choice(data))
 	lang = prepare_data(data)
-	data_variables = data2variables(data)
+	data_variables = data2variables(data, lang)
 	
 	hidden_size = 800
 	n_layers = 3
 
 	model = TextGen(lang.n_chars, hidden_size, lang.n_chars, 1)
+	model.cuda()
 
 	criterion = nn.CrossEntropyLoss()
 	learning_rate = 0.0001
@@ -85,22 +85,23 @@ def start(fileName):
 		
 		if e % print_every == 0:
 			loss = loss / print_every
-			print 'Epoch %d Current Loss = %.4f' % (e, loss)
+			print ('Epoch %d Current Loss = %.4f' % (e, loss))
 			loss = 0
 		
-		print 'Saving now model file for ' + modelFileName 			
-		with open(modelFileNamePath, 'wb') as modelFile:
-			pickle.dump(model, modelFile)			
-		print 'Saved model file successfully.'
-		
-		print 'Saving now lang file for ' + langFileName 
-		with open(langFileNamePath, 'wb') as langFile:
-			pickle.dump(lang, langFile)	
-		print 'Saved lang file successfully.'
+	print ('Saving now model file for ' + modelFileName) 	
+	torch.save(model, modelFileName + ".pth")
+	with open(modelFileNamePath, 'wb') as modelFile:
+		pickle.dump(model, modelFile)			
+	print ('Saved model file successfully.')
+	
+	print ('Saving now lang file for ' + langFileName)
+	with open(langFileNamePath, 'wb') as langFile:
+		pickle.dump(lang, langFile)	
+	print ('Saved lang file successfully.')
 				
 if __name__ == "__main__":
 	if len(sys.argv) != 2:
-		print 'Are you stupid?! Give me the tweets txt file!!'
+		print ('Are you stupid?! Give me the tweets txt file!!')
 		sys.exit()
 	EOS_TOKEN = 0
 	MAX_SEQ_LEN = 40
