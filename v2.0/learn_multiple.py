@@ -1,6 +1,6 @@
 import glob
 import os
-from main import *
+from learn import *
 
 if __name__ == "__main__":
 	path = 'txts/*.txt'
@@ -10,5 +10,5 @@ if __name__ == "__main__":
 		langFileName = fileName.replace("tweets", "lang")
 		modelFileNamePath = 'models/' + os.path.basename(modelFileName).replace('.txt', '.pickle')
 		langFileNamePath = 'models/' + os.path.basename(langFileName).replace('.txt', '.pickle')
-		main.start(fileName)
+		learn.start(fileName)
 
