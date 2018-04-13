@@ -10,27 +10,41 @@ EOS_TOKEN = 0
 
 def sentence2variable(sentence):
     indexes = [lang.char2id[c] for c in sentence]
+    print 'indexes are ' + indexes
     input_var = Variable(torch.LongTensor(indexes).view(-1, 1))
+    print 'input_var is' + input_var
     indexes.append(EOS_TOKEN)
     target_var = Variable(torch.LongTensor(indexes[1:]).view(-1, 1))
+    print 'target_var is' + target_var
     return input_var, target_var
 	
 def generate(model, start_string, temperature, max_len):
     hidden = model.init_hidden()
+    print 'hidden is ' + hidden
     start_var,_ = sentence2variable(start_string)
+    print 'start_var is ' + start_var
+
     for i in range(len(start_string) - 1):
         _, hidden = model(start_var[i], hidden)
     
     str = start_string
+    print 'str is ' + str
     out, hidden = model(start_var[-1], hidden)
+    print 'out is ' + out
     out_dist = out.data.view(-1).div(temperature).exp()
+    print 'out_dist is ' + out_dist 
     new_c = lang.id2char[torch.multinomial(out_dist, 1)[0]]
+    print 'new_c is ' + new_c
     str += new_c
+    print 'str after +=new_c is ' str
     for i in range(max_len):
         new_c_var, _ = sentence2variable(new_c)
+        print 'new_c_var is' + new_c_var
         out, hidden = model(new_c_var, hidden)
         out_dist = out.data.view(-1).div(temperature).exp()
+        print 'out_dist is' + out_dist
         char_id = torch.multinomial(out_dist, 1)[0]
+        print 'char_id is ' + char_id 
         if char_id == EOS_TOKEN:
             return str
         new_c = lang.id2char[char_id]
@@ -59,10 +73,11 @@ if __name__ == "__main__":
 
 	print 'Generating tweets..........'
 	for i in range(1000):
-		tweetGenerated = generate(model, '# ', 0.15, 50)
-		if tweetGenerated in tweetsDictionary:
+	    tweetGenerated = generate(model, '# ', 0.15, 50)
+            print 'tweetGenerated is ' + tweetGenerated
+	    if tweetGenerated in tweetsDictionary:
 		tweetsDictionary[str(tweetGenerated)] += 1
-		else:
+	    else:
 		tweetsDictionary[str(tweetGenerated)] = 0
 
 	# this is hurani. it can be changed with some kind of algorithm
