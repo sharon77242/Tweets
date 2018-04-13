@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import torch
 from torch import nn, autograd, optim
 from torch.autograd import Variable
