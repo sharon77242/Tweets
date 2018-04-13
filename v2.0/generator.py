@@ -11,9 +11,9 @@ EOS_TOKEN = 0
 
 def sentence2variable(sentence):
     indexes = [lang.char2id[c] for c in sentence]
-    input_var = Variable(torch.LongTensor(indexes).view(-1, 1))
+    input_var = Variable(torch.cuda.LongTensor(indexes).view(-1, 1))
     indexes.append(EOS_TOKEN)
-    target_var = Variable(torch.LongTensor(indexes[1:]).view(-1, 1))
+    target_var = Variable(torch.cuda.LongTensor(indexes[1:]).view(-1, 1))
     return input_var, target_var
 	
 def generate(model, start_string, temperature, max_len):
@@ -70,7 +70,7 @@ def loadModel(modelFileNamePath):
 	with open(modelFileNamePath, 'rb') as modelFile:
 		model = pickle.load(modelFile)		
 	print 'Loaded model file successfully.'
-	return model
+	return model.cuda()
 
 def loadLanguage(langFileNamePath):
 	print 'Loading now lang file.'
