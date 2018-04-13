@@ -6,10 +6,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
+  showDocuments = false;
+  showArrow = false;
+  showText = false;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.showDocuments = true;
+    }, 500);
+
+    setTimeout(() => {
+      this.showArrow = true;
+    }, 1000);
+
+    setTimeout(() => {
+      this.showText = true;
+    }, 1500);
   }
 
 }

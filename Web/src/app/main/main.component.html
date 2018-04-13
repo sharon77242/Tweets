@@ -1,11 +1,11 @@
 <p>
-  TweetApp is a simple app that lets you get a glance to what people think in a certain country.<br>
+  TweetGen is a simple app that lets you get a glance to what people think in a certain country.<br>
   You just need to select a country and we'll make a tweet for you.<br>
   In order to start click on 'Generate' in the menu.
 </p>
 
 <div class="icons-animation">
-  <div style="width: 150px;">
+  <div style="width: 150px;" [ngClass]="showDocuments ? 'animated fadeInLeft' : ''" [hidden]="!showDocuments">
     <span class="edgeicon icon-document document"></span>
     <span class="edgeicon icon-document document"></span>
     <span class="edgeicon icon-document document"></span>
@@ -13,11 +13,11 @@
     <span class="edgeicon icon-document document"></span>
   </div>
 
-  <div style="width: 130px; padding-top: 10px;">
+  <div style="width: 130px; padding-top: 10px;" [ngClass]="showArrow ? 'animated fadeInLeft' : ''" [hidden]="!showArrow">
     <span class="edgeicon icon-arrow-right arrow"></span>
   </div>
 
-  <div style="padding-top: 17px;">
+  <div style="padding-top: 17px;" [ngClass]="showText ? 'animated fadeInLeft' : ''" [hidden]="!showText">
       <span class="edgeicon icon-text text"></span>
   </div>
 </div>

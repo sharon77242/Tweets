@@ -6,6 +6,10 @@
     outline: 0;
 }
 
+body {
+    background-color: #e7ecf1;
+}
+
 @font-face {
     font-family: "edgeicons";
     src: url(assets/edge-icons-Regular.woff);

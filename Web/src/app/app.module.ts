@@ -17,7 +17,7 @@ const appRoutes: Routes = [
     redirectTo: '/Main',
     pathMatch: 'full'
   },
-  // { path: '**', component: PageNotFoundComponent }
+  { path: '**', redirectTo: '/Main' }
 ];
 
 @NgModule({
@@ -27,10 +27,7 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
-    )
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [],
   bootstrap: [AppComponent]
