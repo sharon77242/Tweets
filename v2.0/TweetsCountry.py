@@ -33,6 +33,7 @@ c_full_name = 'full_name'
 c_tweets = 'tweets'
 time_end = ''
 c_txts = 'txts'
+time_end = time.time() + 60 * 120
 
 
 class Listener(StreamListener):
@@ -96,7 +97,7 @@ class Listener(StreamListener):
         print(status)
 
 
-if __name__ == '__main__':
+def mineTweets():
     auth = OAuthHandler(c_consumer_key, c_consumer_secret)
     auth.set_access_token(c_access_key, c_access_secret)
 
@@ -106,14 +107,18 @@ if __name__ == '__main__':
     file_name = c_txts + '/' + c_tweets + ' ' + current_location[0] + ' ' + date + '.txt'
 
     with open(file_name, 'a', encoding='utf-8') as file:
-        while time.time() < time_end:
-            try:
-                twitterStream = Stream(auth, Listener(file, current_location))
-                twitterStream.filter(languages=["en"], locations=[-180, -90, 180, 90])
-            except IncompleteRead:
-                # Oh well, reconnect and keep trucking
-                continue
-            except KeyboardInterrupt:
-                # Or however you want to exit this loop
-                twitterStream.disconnect()
-                break
+           while time.time() < time_end:
+                try:
+                    twitterStream = Stream(auth, Listener(file, current_location))
+                    twitterStream.filter(languages=["en"], locations=[-180, -90, 180, 90])
+                except IncompleteRead:
+                    # Oh well, reconnect and keep trucking
+                    continue
+                except KeyboardInterrupt:
+                    # Or however you want to exit this loop
+                    twitterStream.disconnect()
+                    break
+
+    return file_name
+
+mineTweets()
