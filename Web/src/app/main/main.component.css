@@ -10,39 +10,55 @@
 }
 
 .icons-animation {
+    box-sizing: border-box;
+    display: flex;
     position: relative;
-    margin-top: 30px;
+    margin-top: 40px;
     width: 100%;
-    height: 100px;
+    height: 150px;
     color: #657786;
 }
 
-.icons-animation span {
+.icons-animation .document {
     font-size: 40pt;
     position: absolute;
     background-color: #fff;
 }
 
-.icons-animation span:nth-child(1) {
-    top: 25px;
+.icons-animation .document:nth-child(1) {
+    top: 35px;
     left: 20px;
-    transform: rotate(5deg);
+    transform: rotate(340deg);
 }
 
-.icons-animation span::nth-child(2) {
+.icons-animation .document:nth-child(2) {
+    top: 45px;
+    left: 50px;
+    transform: rotate(2deg);
+}
+
+.icons-animation .document::nth-child(3) {
     top: 0;
     left: 0;
     transform: rotate(10deg);
 }
 
-.icons-animation span:nth-child(3) {
+.icons-animation .document:nth-child(4) {
     top: -5px;
     left: 30px;
     transform: rotate(340deg);
 }
 
-.icons-animation span:nth-child(4) {
+.icons-animation .document:nth-child(5) {
     top: 0;
     left: 65px;
     transform: rotate(20deg);
+}
+
+.arrow {
+    font-size: 60pt;
+}
+
+.text {
+    font-size: 50pt;
 }

@@ -26,3 +26,11 @@
 .icon-document::before {
     content: "\f156";
 }
+
+.icon-arrow-right::before {
+    content: "\f114";
+}
+
+.icon-text::before {
+    content: "\f094";
+}
