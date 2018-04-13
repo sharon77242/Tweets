@@ -22,3 +22,7 @@
 .icon-bird::before {
     content: "\f179";
 }
+
+.icon-document::before {
+    content: "\f156";
+}
