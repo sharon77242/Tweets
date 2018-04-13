@@ -1,0 +1,51 @@
+.container {
+    width: 50%;
+    margin: auto;
+    padding-top: 15px;
+    text-align: left;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+    padding-bottom: 10px;
+    margin-bottom: 40px;
+}
+
+.logo {
+    color: #1B95E0;
+    font-size: 20pt;
+    font-weight: bold;
+    letter-spacing: -1px;
+}
+
+.menu {
+    width: 250px;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.menu li {
+    height: 30px;
+    cursor: pointer;
+    border-bottom: 2px solid #fff;
+}
+
+.menu li a:link, .menu li a:visited {
+    color: #66757f;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.menu li:hover {
+    border-bottom-color: #1c94e0;
+}
+
+.menu li:hover a {
+    color: #1c94e0;
+}
