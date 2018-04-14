@@ -2,7 +2,7 @@
 
 <div class="form">
   <div class="form-row">
-      <input type="text" class="input-text" placeholder="Full name">
+    <input type="text" class="input-text" placeholder="Full name">
   </div>
 
   <div class="form-row">
@@ -10,6 +10,15 @@
   </div>
 
   <div class="form-row">
-      <input type="submit" class="button input-submit" value="Generate">
-    </div>
+    <select class="input-select"
+            (change)="selectedState = $event.target.value"
+            [ngClass]="selectedState === '' ? 'input-empty' : ''">
+      <option value="" disabled selected>Select state</option>
+      <option *ngFor="let state of statesList" [value]="state.value">{{ state.label }} ({{ state.value }})</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <input type="submit" class="button input-submit" value="Generate">
+  </div>
 </div>

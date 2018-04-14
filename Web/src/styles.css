@@ -41,19 +41,22 @@ body {
 
 .form {
     text-align: center;
-    width: 100%;
+    width: 340px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 .form .form-row {
     margin-top: 15px;
 }
 
-::placeholder {
+::placeholder, .input-empty {
     color: #aab8c3;
 }
 
-.input-text {
-    width: 320px;
+.input-text, .input-select {
+    box-sizing: border-box;
+    width: 100%;
     border: 1px solid #e6ecf0;
     font-size: 18px;
     font-weight: bold;
@@ -65,6 +68,10 @@ body {
 .input-text:focus {
     color: #14171a;
     border-color: rgba(0,132,180,0.5);
+}
+
+.input-select option {
+    color: #14171a !important;
 }
 
 .input-submit {
@@ -86,7 +93,7 @@ body {
 .input-submit:active {
     background-color: #006dbf;
     border-color: #006dbf;
-    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #1da1f2;
+    /* box-shadow: 0 0 0 2px #fff, 0 0 0 4px #1da1f2; */
 }
 
 .edgeicon {
