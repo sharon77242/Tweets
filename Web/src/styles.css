@@ -15,6 +15,26 @@ body {
     src: url(assets/edge-icons-Regular.woff);
 }
 
+.button {
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 20px;
+    background-color: #fff;
+    border: 1px #1B95E0 solid;
+    color: #1B95E0;
+    padding: 10px 25px;
+    transition: box-shadow .15s ease-in-out;
+}
+
+.button:hover {
+    background-color: #E8F4FB;
+}
+
+.button:active {
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1B95E0;
+}
+
 .edgeicon {
     font-family: "edgeicons";
     font-weight: normal;
@@ -37,4 +57,8 @@ body {
 
 .icon-text::before {
     content: "\f094";
+}
+
+.icon-double-arrow-right::before {
+    content: "\f192";
 }

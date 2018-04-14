@@ -1,7 +1,7 @@
 <p>
-  TweetGen is a simple app that lets you get a glance to what people think in a certain country.<br>
-  You just need to select a country and we'll make a tweet for you.<br>
-  In order to start click on 'Generate' in the menu.
+  TweetGen is a simple app that lets you get a glance to what people think in a certain country.
+  <br> You just need to select a country and we'll make a tweet for you.
+  <br> In order to start click on 'Generate'.
 </p>
 
 <div class="icons-animation">
@@ -18,6 +18,15 @@
   </div>
 
   <div style="padding-top: 17px;" [ngClass]="showText ? 'animated fadeInLeft' : ''" [hidden]="!showText">
-      <span class="edgeicon icon-text text"></span>
+    <span class="edgeicon icon-text text"></span>
   </div>
+</div>
+
+<div style="text-align: right; padding-right: 5px;">
+  <a href="/Generate">
+    <button class="button" type="button">
+      Generate
+      <span class="edgeicon icon-double-arrow-right"></span>
+    </button>
+  </a>
 </div>
