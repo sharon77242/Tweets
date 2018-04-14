@@ -15,7 +15,7 @@ MAX_SEQ_LEN = 40
 
 def read_data(fileNamePath): 
     #lines = open('data/eng-heb.txt').read().strip().split('\n')
-	lines = open(fileNamePath).read().strip().split('\n')
+	lines = open(fileNamePath, encoding='utf8').read().strip().split('\n')
 	english_lines = [l.split('\t')[0].lower().strip() for l in lines]
 	return english_lines
 

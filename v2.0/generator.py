@@ -9,51 +9,51 @@ from classes import *
 
 EOS_TOKEN = 0
 
-def sentence2variable(sentence):
-    indexes = [lang.char2id[c] for c in sentence]
-    input_var = Variable(torch.cuda.LongTensor(indexes).view(-1, 1))
-    indexes.append(EOS_TOKEN)
-    target_var = Variable(torch.cuda.LongTensor(indexes[1:]).view(-1, 1))
-    return input_var, target_var
+def sentence2variable(sentence, lang):
+	indexes = [lang.char2id[c] for c in sentence]
+	input_var = Variable(torch.cuda.LongTensor(indexes).view(-1, 1))
+	indexes.append(EOS_TOKEN)
+	target_var = Variable(torch.cuda.LongTensor(indexes[1:]).view(-1, 1))
+	return input_var, target_var
 	
-def generate(model, start_string, temperature, max_len):
-    hidden = model.init_hidden()
-    start_var,_ = sentence2variable(start_string)
-    print 'start_var is '
-    print start_var
-    print 'start_var[-1] is:'
-    print start_var[-1]
-    for i in range(len(start_string) - 1):
-        _, hidden = model(start_var[i], hidden)
+def generate(model, lang, start_string, temperature, max_len):
+	hidden = model.init_hidden()
+	start_var,_ = sentence2variable(start_string, lang)
+	print ('start_var is ')
+	print (start_var)
+	print ('start_var[-1] is:')
+	print (start_var[-1])
+	for i in range(len(start_string) - 1):
+		hidden = model(start_var[i], hidden)
     
-    str = start_string
-    print 'str is ' + str
-    out, hidden = model(start_var[-1], hidden)
-    #print 'out is '
-    #print out
-    out_dist = out.data.view(-1).div(temperature).exp()
-    #print 'out_dist is ' 
-    #print out_dist 
-    new_c = lang.id2char[torch.multinomial(out_dist, 1)[0]]
-    print 'new_c is '
-    print new_c
-    str += new_c
-    print 'str after +=new_c is ' 
-    print str
-    for i in range(max_len):
-        new_c_var, _ = sentence2variable(new_c)
-        out, hidden = model(new_c_var, hidden)
-        out_dist = out.data.view(-1).div(temperature).exp()
-        char_id = torch.multinomial(out_dist, 1)[0]
-        if char_id == EOS_TOKEN:
-            return str
-        new_c = lang.id2char[char_id]
-        str += new_c
-	print 'str now is: ' + str
-    return str
+	str = start_string
+	print ('str is ' + str)
+	out, hidden = model(start_var[-1], hidden)
+	#print 'out is '
+	#print out
+	out_dist = out.data.view(-1).div(temperature).exp()
+	#print 'out_dist is ' 
+	#print out_dist 
+	new_c = lang.id2char[torch.multinomial(out_dist, 1)[0]]
+	print ('new_c is ')
+	print (new_c)
+	str += new_c
+	print ('str after +=new_c is ')
+	print (str)
+	for i in range(max_len):
+		new_c_var, _ = sentence2variable(new_c, lang)
+		out, hidden = model(new_c_var, hidden)
+		out_dist = out.data.view(-1).div(temperature).exp()
+		char_id = torch.multinomial(out_dist, 1)[0]
+		if char_id == EOS_TOKEN:
+			return (str)
+		new_c = lang.id2char[char_id]
+		str += new_c
+	print ('str now is: ' + str)
+	return str
 
 def findBestTweet(tweetsDictionary):
-	print 'finding best tweet.....'
+	print ('finding best tweet.....')
 
 	maxValue = 0
 
@@ -67,34 +67,34 @@ def findBestTweet(tweetsDictionary):
 	return bestTweet
 
 def loadModel(modelFileNamePath):
-	print 'Loading now model file.'
+	print ('Loading now model file.')
 	with open(modelFileNamePath, 'rb') as modelFile:
 		model = pickle.load(modelFile)		
-	print 'Loaded model file successfully.'
+	print ('Loaded model file successfully.')
 	return model.cuda()
 
 def loadLanguage(langFileNamePath):
-	print 'Loading now lang file.'
+	print ('Loading now lang file.')
 	with open(langFileNamePath, 'rb') as langFile:
 		lang = pickle.load(langFile)		
-	print 'Loaded lang file successfully.'
+	print ('Loaded lang file successfully.')
 	return lang
 
 def generateBestTweet(modelFileNamePath, langFileNamePath):
 	model =	loadModel(modelFileNamePath)
 	lang = loadLanguage(langFileNamePath)
 
-	print 'Generating tweets..........'
+	print ('Generating tweets..........')
 	
 	tweetsDictionary = {}
 	
 	for i in range(1000):
-	    tweetGenerated = generate(model, '# ', 0.40, 40)
-            print 'tweetGenerated is ' + tweetGenerated
-	    if tweetGenerated in tweetsDictionary:
-		tweetsDictionary[str(tweetGenerated)] += 1
-	    else:
-		tweetsDictionary[str(tweetGenerated)] = 0
+		tweetGenerated = generate(model, lang, '# ', 0.40, 40)
+		print ('tweetGenerated is ' + tweetGenerated)
+		if tweetGenerated in tweetsDictionary:
+			tweetsDictionary[str(tweetGenerated)] += 1
+		else:
+			tweetsDictionary[str(tweetGenerated)] = 0
 
 	print (str(len(tweetsDictionary)) + ' tweets generated')
 	return findBestTweet(tweetsDictionary)
@@ -102,10 +102,9 @@ def generateBestTweet(modelFileNamePath, langFileNamePath):
 
 if __name__ == "__main__":
 	if len(sys.argv) != 3:
-		print 'Are you stupid?! How can I generate something without the paths of the model and lang files?!'
+		print ('Are you stupid?! How can I generate something without the paths of the model and lang files?!')
 		sys.exit()
 
 	modelFileNamePath = sys.argv[1]
 	langFileNamePath = sys.argv[2]
 	generateBestTweet(modelFileNamePath, langFileNamePath)
-

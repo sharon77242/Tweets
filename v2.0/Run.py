@@ -29,5 +29,7 @@ if __name__ == "__main__":
 	countries = [c_locations_new_york, c_locations_los_angeles, c_locations_california]
 	for country in countries:	
 		time.sleep(1)
-		Process(target=run, args=(country,)).start()
+		p = Process(target=run, args=(country,))
+		p.start()
+		#p.join()
 		
