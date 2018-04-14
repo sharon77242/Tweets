@@ -64,6 +64,7 @@ def findBestTweet(tweetsDictionary):
 			bestTweet = key
 
 	print ('bestTweet is: ' + bestTweet + " size is: " + str(maxValue))
+	return bestTweet
 
 def loadModel(modelFileNamePath):
 	print 'Loading now model file.'
@@ -79,14 +80,7 @@ def loadLanguage(langFileNamePath):
 	print 'Loaded lang file successfully.'
 	return lang
 
-if __name__ == "__main__":
-	if len(sys.argv) != 3:
-		print 'Are you stupid?! How can I generate something without the paths of the model and lang files?!'
-		sys.exit()
-
-	modelFileNamePath = sys.argv[1]
-	langFileNamePath = sys.argv[2]
-
+def generateBestTweet(modelFileNamePath, langFileNamePath):
 	model =	loadModel(modelFileNamePath)
 	lang = loadLanguage(langFileNamePath)
 
@@ -103,5 +97,15 @@ if __name__ == "__main__":
 		tweetsDictionary[str(tweetGenerated)] = 0
 
 	print (str(len(tweetsDictionary)) + ' tweets generated')
-	findBestTweet(tweetsDictionary)
+	return findBestTweet(tweetsDictionary)
+
+
+if __name__ == "__main__":
+	if len(sys.argv) != 3:
+		print 'Are you stupid?! How can I generate something without the paths of the model and lang files?!'
+		sys.exit()
+
+	modelFileNamePath = sys.argv[1]
+	langFileNamePath = sys.argv[2]
+	generateBestTweet(modelFileNamePath, langFileNamePath)
 

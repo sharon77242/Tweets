@@ -10,6 +10,9 @@ import glob
 import os
 import sys
 
+EOS_TOKEN = 0
+MAX_SEQ_LEN = 40
+
 def read_data(fileNamePath): 
     #lines = open('data/eng-heb.txt').read().strip().split('\n')
 	lines = open(fileNamePath).read().strip().split('\n')
@@ -50,7 +53,7 @@ def train_seq(model, optimizer, criterion, input_var, target_var):
     optimizer.step()
     return loss.data[0] / seq_len
 	
-def start(fileName):
+def learn(fileName):
 	modelFileName = fileName.replace("tweets", "model")
 	langFileName = fileName.replace("tweets", "lang")
 	modelFileNamePath = 'models/' + os.path.basename(modelFileName).replace('.txt', '.pickle')
@@ -98,11 +101,11 @@ def start(fileName):
 	with open(langFileNamePath, 'wb') as langFile:
 		pickle.dump(lang, langFile)	
 	print ('Saved lang file successfully.')
+	
+	return modelFileNamePath, langFileNamePath
 				
 if __name__ == "__main__":
 	if len(sys.argv) != 2:
 		print ('Are you stupid?! Give me the tweets txt file!!')
 		sys.exit()
-	EOS_TOKEN = 0
-	MAX_SEQ_LEN = 40
-	start(sys.argv[1])
+	learn(sys.argv[1])

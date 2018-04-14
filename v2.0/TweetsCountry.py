@@ -14,17 +14,6 @@ c_consumer_secret = "s4NniXqLAbjTtDdPKBvRtDPTUbvRSScX7UvXqLNKRAHQrPingc"
 c_access_key = "931836587142537216-hjJ0SkbYLM8HjZRmY5gaTycaBEHfUB4"
 c_access_secret = "zbhC62mh7mR9ioilqinajIHE2lXJ0dpNfI1YYZuC1jav7"
 
-c_new_york = 'new york'
-c_locations_new_york = [c_new_york, 'nyc', ' ny']
-
-c_los_angeles = 'los angeles'
-c_locations_los_angeles = [c_los_angeles, ', la']
-
-c_california = 'california'
-c_locations_california = [c_california, ', ca ']
-
-current_location = c_locations_california
-
 c_text = 'text'
 c_user = 'user'
 c_location = 'location'
@@ -33,7 +22,7 @@ c_full_name = 'full_name'
 c_tweets = 'tweets'
 time_end = ''
 c_txts = 'txts'
-time_end = time.time() + 60 * 120
+time_end = time.time() + 60 * 60 * 0.05
 
 
 class Listener(StreamListener):
@@ -94,15 +83,15 @@ class Listener(StreamListener):
         return False
 
     def on_error(self, status):
-        print(status)
+        print('error with status: ' + str(status))
 
 
-def mineTweets():
+def mineTweets(current_location, hours):
     auth = OAuthHandler(c_consumer_key, c_consumer_secret)
     auth.set_access_token(c_access_key, c_access_secret)
 
     date = datetime.datetime.now().strftime("%Y_%m_%d %H %M %S")
-    time_end = time.time() + 60 * 120
+    time_end = time.time() + 60 * 60 * hours
 
     file_name = c_txts + '/' + c_tweets + ' ' + current_location[0] + ' ' + date + '.txt'
 
@@ -121,4 +110,4 @@ def mineTweets():
 
     return file_name
 
-mineTweets()
+#mineTweets()
