@@ -25,6 +25,11 @@
     letter-spacing: -1px;
 }
 
+.logo a:link, .logo a:visited {
+    color: inherit;
+    text-decoration: none;
+}
+
 .menu {
     width: 250px;
     list-style-type: none;
