@@ -54,9 +54,10 @@
 }
 
 .footer {
-    margin-top: 30px;
+    color: #aab8c2;
+    margin-top: 40px;
     text-align: right;
     padding: 20px 0;
-    border-top: 1px solid rgba(0,0,0,0.25);
+    border-top: 1px solid #e6ecf0;
     font-size: 11.5pt;
 }

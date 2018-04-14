@@ -4,10 +4,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
+import { GenerateComponent } from './generate/generate.component';
 
 const appRoutes: Routes = [
-  // { path: 'crisis-center', component: CrisisListComponent },
   // { path: 'hero/:id',      component: HeroDetailComponent },
+  {
+    path: 'Generate',
+    component: GenerateComponent
+  },
   {
     path: 'Main',
     component: MainComponent
@@ -23,7 +27,8 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    MainComponent
+    MainComponent,
+    GenerateComponent
   ],
   imports: [
     BrowserModule,

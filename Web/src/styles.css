@@ -8,6 +8,7 @@
 
 body {
     background-color: #e7ecf1;
+    color: #14171a;
 }
 
 @font-face {
@@ -15,24 +16,77 @@ body {
     src: url(assets/edge-icons-Regular.woff);
 }
 
-.button {
-    font-family: inherit;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 20px;
-    background-color: #fff;
+.primary-button {
     border: 1px #1B95E0 solid;
     color: #1B95E0;
     padding: 10px 25px;
-    transition: box-shadow .15s ease-in-out;
+    border-radius: 20px;
+    background-color: #fff;
 }
 
-.button:hover {
+.primary-button:hover {
     background-color: #E8F4FB;
 }
 
-.button:active {
+.primary-button:active {
     box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #1B95E0;
+}
+
+.button {
+    transition: box-shadow .15s ease-in-out;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.form {
+    text-align: center;
+    width: 100%;
+}
+
+.form .form-row {
+    margin-top: 15px;
+}
+
+::placeholder {
+    color: #aab8c3;
+}
+
+.input-text {
+    width: 320px;
+    border: 1px solid #e6ecf0;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+    font-family: inherit;
+    border-radius: 3px;
+}
+
+.input-text:focus {
+    color: #14171a;
+    border-color: rgba(0,132,180,0.5);
+}
+
+.input-submit {
+    background-color: #1da1f2;
+    border: 1px solid #1da1f2;
+    color: #fff;
+    font-size: 18px;
+    line-height: 24px;
+    padding: 12px 20px;
+    border-radius: 100px;
+    transition: background .2s linear;
+}
+
+.input-submit:hover {
+    background-color: #006dbf;
+    border-color: #006dbf;
+}
+
+.input-submit:active {
+    background-color: #006dbf;
+    border-color: #006dbf;
+    box-shadow: 0 0 0 2px #fff, 0 0 0 4px #1da1f2;
 }
 
 .edgeicon {

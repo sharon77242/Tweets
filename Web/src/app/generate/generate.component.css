@@ -1,0 +1,10 @@
+.title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 17pt;
+    margin-bottom: 10px;
+}
+
+.input-submit {
+    width: 346px;
+}
