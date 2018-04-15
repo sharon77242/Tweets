@@ -18,6 +18,11 @@ c_locations_california = [c_california, ', ca ']
 	
 countries = [c_locations_new_york, c_locations_los_angeles, c_locations_california]
 
+def writeBestTweetToFile(bestTweet,country):
+	country = country.replace(" ", "_")
+	with open('bestTweets/' + country + '.txt', 'w') as tweetFile:
+		tweetFile.write(bestTweet)
+
 def run(country):
 	try:
 		tweetsFile = mineTweets(country, 0.05)
@@ -29,17 +34,17 @@ def run(country):
 
 		bestTweet = generateBestTweet(model,lang)
 		print ('best tweet is: ' + bestTweet)
-
-		openServerConnection(bestTweet, country[0])
+		
+		writeBestTweetToFile(bestTweet, country[0])
 
 	except (KeyboardInterrupt, SystemExit):
 		print ('Process of Country:' + country[0] + ' Exit')
 	
 if __name__ == "__main__":
 
+	Process(target = openServerConnection, args=()).start()
+	
 	for country in countries:	
 		time.sleep(2)
-		p = Process(target=run, args=(country,))
-		p.start()
-		#p.join()
+		Process(target=run, args=(country,)).start()
 		
