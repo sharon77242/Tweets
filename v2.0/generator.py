@@ -19,15 +19,15 @@ def sentence2variable(sentence, lang):
 def generate(model, lang, start_string, temperature, max_len):
 	hidden = model.init_hidden()
 	start_var,_ = sentence2variable(start_string, lang)
-	print ('start_var is ')
-	print (start_var)
-	print ('start_var[-1] is:')
-	print (start_var[-1])
+	#print ('start_var is ')
+	#print (start_var)
+	#print ('start_var[-1] is:')
+	#print (start_var[-1])
 	for i in range(len(start_string) - 1):
-		hidden = model(start_var[i], hidden)
+		_, hidden = model(start_var[i], hidden)
     
 	str = start_string
-	print ('str is ' + str)
+	#print ('str is ' + str)
 	out, hidden = model(start_var[-1], hidden)
 	#print 'out is '
 	#print out
@@ -35,11 +35,11 @@ def generate(model, lang, start_string, temperature, max_len):
 	#print 'out_dist is ' 
 	#print out_dist 
 	new_c = lang.id2char[torch.multinomial(out_dist, 1)[0]]
-	print ('new_c is ')
-	print (new_c)
+	#print ('new_c is ')
+	#print (new_c)
 	str += new_c
-	print ('str after +=new_c is ')
-	print (str)
+	#print ('str after +=new_c is ')
+	#print (str)
 	for i in range(max_len):
 		new_c_var, _ = sentence2variable(new_c, lang)
 		out, hidden = model(new_c_var, hidden)
@@ -49,7 +49,7 @@ def generate(model, lang, start_string, temperature, max_len):
 			return (str)
 		new_c = lang.id2char[char_id]
 		str += new_c
-	print ('str now is: ' + str)
+	#print ('str now is: ' + str)
 	return str
 
 def findBestTweet(tweetsDictionary):
