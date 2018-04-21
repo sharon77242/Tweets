@@ -21,11 +21,13 @@ bestTweet = {
 
 
 def read_times_on_country_from_file(country):
+    data = []
     for fileName in os.listdir('bestTweets/'):
         if country in fileName:
-            data = (fileName.split(country, 1)[1])[1:]
-            return data
-    return ' error - the tweet file doesnt exists its probably still learning'
+            data.append((fileName.split(country, 1)[1])[1:])
+    if data:
+        return data
+    return [' error - the tweet file doesnt exists its probably still learning']
 
 
 def read_best_tweet_from_file(country, time):
