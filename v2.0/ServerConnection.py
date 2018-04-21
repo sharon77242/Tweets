@@ -1,37 +1,56 @@
 #!/usr/bin/python3
 
-import sys
 import os
-from flask import Flask, jsonify, url_for, request
+from flask import Flask, jsonify, url_for, request, json
 from flask_cors import CORS
+
+''' 
+file names example : california_21_04_2018_18_19
+                    <country>_day_month_year_hour_minute
+running on port 5000,
+curl http://127.0.0.1:5000/california  ,
+curl -H "Content-Type: application/json" -X POST -d '{"country":"california","time":"21_04_2018_18_19"}' http://127.0.0.1:5000/
+'''
 
 app = Flask(__name__)
 CORS(app)
 
-bestTweet =  {
+bestTweet = {
         'data': 'Empty tweet',
     }
 
-def readBestTweetFromFile(country):
+
+def read_times_on_country_from_file(country):
     for fileName in os.listdir('bestTweets/'):
-         if country in fileName: 
-              with open('bestTweets/' + fileName, 'r') as tweetFile:
-                   data = tweetFile.read()
-              return data
-    return 'error - the tweet file doesnt exists its probably still learning'
+        if country in fileName:
+            data = (fileName.split(country, 1)[1])[1:]
+            return data
+    return ' error - the tweet file doesnt exists its probably still learning'
+
+
+def read_best_tweet_from_file(country, time):
+    with open('bestTweets/' + country + '_' + time, 'r') as tweetFile:
+        data = tweetFile.read()
+        return data
+    return ' error - the tweet file doesnt exists its probably still learning'
+
 
 @app.route('/<country>', methods=['GET'])
-def getTimesForCountry(country):
-    return jsonify(['21/04/2018 18:19', '21/04/2018 19:19', '21/04/2018 20:19'])
+def get_times_for_country(country):
+    return jsonify(read_times_on_country_from_file(country))
+
 
 @app.route('/', methods=['POST'])
-def getBestTweetForCountryAndTime():
+def get_best_tweet_for_country_and_time():
     if request.method == 'POST':
-        country = request.form['country']
-        time = request.form['time']
+        country = request.json['country']
+        time = request.json['time']
+        return jsonify(read_best_tweet_from_file(country, time))
 
-def openServerConnection():
-    app.run(debug=True) # running on port 5000, curl http://127.0.0.1:5000/california
-    
+
+def open_server_connection():
+    app.run(debug=True)
+
+
 if __name__ == '__main__':
-    openServerConnection()
+    open_server_connection()

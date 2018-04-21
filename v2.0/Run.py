@@ -3,7 +3,7 @@
 from TweetsCountry import mineTweets
 from learn import learn
 from generator import generateBestTweet
-from ServerConnection import openServerConnection
+from ServerConnection import open_server_connection
 from multiprocessing import Process
 import time
 
@@ -42,7 +42,7 @@ def run(country):
 	
 if __name__ == "__main__":
 
-	Process(target = openServerConnection, args=()).start()
+	Process(target = open_server_connection, args=()).start()
 	
 	for country in countries:	
 		time.sleep(2)
