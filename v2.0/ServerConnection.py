@@ -51,7 +51,7 @@ def get_best_tweet_for_country_and_time():
 
 
 def open_server_connection():
-    app.run(debug=True)
+    app.run(debug=False)
 
 
 if __name__ == '__main__':
