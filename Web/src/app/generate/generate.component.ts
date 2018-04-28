@@ -13,6 +13,7 @@ export class GenerateComponent implements OnInit {
   generateForm: FormGroup;
 
   displayStateLoading = false;
+  stateSelectionError = '';
 
   constructor(private http: Http) {
     this.statesList = [
@@ -39,9 +40,21 @@ export class GenerateComponent implements OnInit {
   StateChanged(): void {
     this.displayStateLoading = true;
     this.generateForm.controls.state.disable();
+    this.stateSelectionError = '';
+    this.timesList = [];
+    this.generateForm.controls.time.setValue('');
+    this.generateForm.controls.time.disable();
 
-    this.http.get('http://127.0.0.1:5000/' + this.generateForm.controls.state).subscribe((res: Response) => {
-      this.timesList = JSON.parse(res.text());
+    this.http.get('http://127.0.0.1:5000/' + this.generateForm.controls.state.value).subscribe((res: Response) => {
+      const timesList = JSON.parse(res.text());
+
+      if (!(timesList[0] + '').includes('error')) {
+        this.timesList = timesList;
+        this.generateForm.controls.time.enable();
+      } else {
+        this.stateSelectionError = 'Error. No available tweets for the state';
+      }
+
       console.log(JSON.parse(res.text()));
 
       this.displayStateLoading = false;

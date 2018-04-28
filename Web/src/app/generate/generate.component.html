@@ -29,12 +29,17 @@
     <div class="validation validation-loading" [hidden]="!displayStateLoading">
       <img src="assets/loading.gif">
     </div>
+
+    <div class="validation"
+        [ngClass]="generateForm.controls.state.touched ? (stateSelectionError !== '' ? 'validation-error' : 'validation-ok') : ''">
+        {{ stateSelectionError }}
+    </div>
   </div>
 
   <div class="form-row">
     <select class="input-select"
             formControlName="time"
-            [ngClass]="selectedTime === '' ? 'input-empty' : ''">
+            [ngClass]="generateForm.controls.time.value === '' ? 'input-empty' : ''">
       <option value="" disabled selected>Select time</option>
       <option *ngFor="let time of timesList" [value]="time">{{ time }}</option>
     </select>
