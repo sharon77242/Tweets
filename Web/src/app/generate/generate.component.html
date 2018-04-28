@@ -31,7 +31,7 @@
     </div>
 
     <div class="validation"
-        [ngClass]="generateForm.controls.state.touched ? (stateSelectionError !== '' ? 'validation-error' : 'validation-ok') : ''">
+        [ngClass]="generateForm.controls.state.touched ? (generateForm.controls.state.invalid || stateSelectionError !== '' ? 'validation-error' : 'validation-ok') : ''">
         {{ stateSelectionError }}
     </div>
   </div>
@@ -43,6 +43,10 @@
       <option value="" disabled selected>Select time</option>
       <option *ngFor="let time of timesList" [value]="time">{{ time }}</option>
     </select>
+
+    <div class="validation" [ngClass]="generateForm.controls.time.touched ? (generateForm.controls.time.invalid ? 'validation-error' : 'validation-ok') : ''">
+      {{ (generateForm.controls.time.touched && generateForm.controls.time.invalid) ? "Select time" : "" }}
+    </div>
   </div>
 
   <div class="form-row">

@@ -67,8 +67,8 @@ export class GenerateComponent implements OnInit {
 
     } else {
       this.http.post('http://127.0.0.1:5000/', {
-        country: this.generateForm.controls.state,
-        time: this.generateForm.controls.time
+        country: this.generateForm.controls.state.value,
+        time: this.generateForm.controls.time.value
       }).subscribe((res: Response) => {
         console.log(JSON.parse(res.text()));
       });
