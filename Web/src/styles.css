@@ -40,14 +40,52 @@ body {
 }
 
 .form {
+    --form-width: 340px;
+    --form-row-height: 50px;
     text-align: center;
-    width: 340px;
+    width: var(--form-width);
     margin-right: auto;
     margin-left: auto;
 }
 
 .form .form-row {
     margin-top: 15px;
+    position: relative;
+    width: 100%;
+    height: var(--form-row-height);
+}
+
+.form .validation {
+    position: absolute;
+    top: 0;
+    left: var(--form-width);
+    width: inherit;
+    height: inherit;
+    line-height: var(--form-row-height);
+    box-sizing: border-box;
+    text-align: left;
+    padding-left: 25px;
+    background-repeat: no-repeat;
+    background-position: 7px 20px;
+}
+
+.validation-error {
+    background-image: url(assets/error.png);
+    color: #c33;
+}
+
+.validation-ok {
+    background-image: url(assets/icon_tick_blue.png);
+}
+
+.validation-loading {
+    padding-top: 10px;
+    padding-left: 3px !important;
+}
+
+.validation-loading img {
+    width: 30px;
+    height: 30px;
 }
 
 ::placeholder, .input-empty {
@@ -72,6 +110,12 @@ body {
 
 .input-select option {
     color: #14171a !important;
+}
+
+input[disabled], select[disabled] {
+    background: #f5f8fa;
+    border-color: #ccd6dd;
+    cursor: not-allowed;
 }
 
 .input-submit {

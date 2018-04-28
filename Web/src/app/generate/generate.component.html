@@ -1,24 +1,46 @@
 <div class="title">Get a glance at people's mind</div>
 
-<div class="form">
+<div class="form" [formGroup]="generateForm">
   <div class="form-row">
-    <input type="text" class="input-text" placeholder="Full name">
+    <input type="text" class="input-text" placeholder="Full name" formControlName="name">
+
+    <div class="validation" [ngClass]="generateForm.controls.name.touched ? (generateForm.controls.name.invalid ? 'validation-error' : 'validation-ok') : ''">
+      {{ (generateForm.controls.name.touched && generateForm.controls.name.invalid) ? "Insert name" : "" }}
+    </div>
   </div>
 
   <div class="form-row">
-    <input type="email" class="input-text" placeholder="Email">
+    <input type="email" class="input-text" placeholder="Email" formControlName="email">
+
+    <div class="validation" [ngClass]="generateForm.controls.email.touched ? (generateForm.controls.email.invalid ? 'validation-error' : 'validation-ok') : ''">
+      {{ (generateForm.controls.email.touched && generateForm.controls.email.invalid) ? "Insert a valid email address" : "" }}
+    </div>
   </div>
 
   <div class="form-row">
     <select class="input-select"
-            (change)="selectedState = $event.target.value"
-            [ngClass]="selectedState === '' ? 'input-empty' : ''">
+            (change)="StateChanged()"
+            formControlName="state"
+            [ngClass]="generateForm.controls.state.value === '' ? 'input-empty' : ''">
       <option value="" disabled selected>Select state</option>
-      <option *ngFor="let state of statesList" [value]="state.value">{{ state.label }} ({{ state.value }})</option>
+      <option *ngFor="let state of statesList" [value]="state.value">{{ state.label }}</option>
+    </select>
+
+    <div class="validation validation-loading" [hidden]="!displayStateLoading">
+      <img src="assets/loading.gif">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <select class="input-select"
+            formControlName="time"
+            [ngClass]="selectedTime === '' ? 'input-empty' : ''">
+      <option value="" disabled selected>Select time</option>
+      <option *ngFor="let time of timesList" [value]="time">{{ time }}</option>
     </select>
   </div>
 
   <div class="form-row">
-    <input type="submit" class="button input-submit" value="Generate">
+    <input type="submit" class="button input-submit" value="Generate" (click)="Generate()">
   </div>
 </div>
