@@ -8,3 +8,16 @@
 .input-submit {
     width: 100%;
 }
+
+.generated-result {
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    padding: 30px;
+    text-align: center;
+    background-color: #1da1f2;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    width: 70%;
+}

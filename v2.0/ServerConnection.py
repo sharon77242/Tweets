@@ -33,7 +33,7 @@ def read_times_on_country_from_file(country):
 def read_best_tweet_from_file(country, time):
     with open('bestTweets/' + country + '_' + time, 'r') as tweetFile:
         data = tweetFile.read()
-        return data
+        return data.rstrip()
     return ' error - the tweet file doesnt exists its probably still learning'
 
 

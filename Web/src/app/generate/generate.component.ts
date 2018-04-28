@@ -12,8 +12,13 @@ export class GenerateComponent implements OnInit {
   timesList: Array<string>;
   generateForm: FormGroup;
 
+  shouldHideForm = false;
+  shouldAnimateForm = false;
+  shouldShakeButton = false;
+  shouldDisplayGeneratedResult = false;
   displayStateLoading = false;
   stateSelectionError = '';
+  generatedResult = '';
 
   constructor(private http: Http) {
     this.statesList = [
@@ -55,8 +60,6 @@ export class GenerateComponent implements OnInit {
         this.stateSelectionError = 'Error. No available tweets for the state';
       }
 
-      console.log(JSON.parse(res.text()));
-
       this.displayStateLoading = false;
       this.generateForm.controls.state.enable();
     });
@@ -64,13 +67,23 @@ export class GenerateComponent implements OnInit {
 
   Generate(): void {
     if (this.generateForm.invalid) {
+      this.shouldShakeButton = true;
 
+      setTimeout(() => {
+        this.shouldShakeButton = false;
+      }, 1000);
     } else {
       this.http.post('http://127.0.0.1:5000/', {
         country: this.generateForm.controls.state.value,
         time: this.generateForm.controls.time.value
       }).subscribe((res: Response) => {
-        console.log(JSON.parse(res.text()));
+        this.shouldAnimateForm = true;
+        this.generatedResult = res.text();
+
+        setTimeout(() => {
+          this.shouldHideForm = true;
+          this.shouldDisplayGeneratedResult = true;
+        }, 1000);
       });
     }
   }

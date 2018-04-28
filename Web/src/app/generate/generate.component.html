@@ -1,55 +1,59 @@
-<div class="title">Get a glance at people's mind</div>
+<div [ngClass]="shouldAnimateForm ? 'animated bounceOut' : ''" [hidden]="shouldHideForm">
+  <div class="title">Get a glance at people's mind</div>
 
-<div class="form" [formGroup]="generateForm">
-  <div class="form-row">
-    <input type="text" class="input-text" placeholder="Full name" formControlName="name">
+  <div class="form" [formGroup]="generateForm">
+    <div class="form-row">
+      <input type="text" class="input-text" placeholder="Full name" formControlName="name">
 
-    <div class="validation" [ngClass]="generateForm.controls.name.touched ? (generateForm.controls.name.invalid ? 'validation-error' : 'validation-ok') : ''">
-      {{ (generateForm.controls.name.touched && generateForm.controls.name.invalid) ? "Insert name" : "" }}
-    </div>
-  </div>
-
-  <div class="form-row">
-    <input type="email" class="input-text" placeholder="Email" formControlName="email">
-
-    <div class="validation" [ngClass]="generateForm.controls.email.touched ? (generateForm.controls.email.invalid ? 'validation-error' : 'validation-ok') : ''">
-      {{ (generateForm.controls.email.touched && generateForm.controls.email.invalid) ? "Insert a valid email address" : "" }}
-    </div>
-  </div>
-
-  <div class="form-row">
-    <select class="input-select"
-            (change)="StateChanged()"
-            formControlName="state"
-            [ngClass]="generateForm.controls.state.value === '' ? 'input-empty' : ''">
-      <option value="" disabled selected>Select state</option>
-      <option *ngFor="let state of statesList" [value]="state.value">{{ state.label }}</option>
-    </select>
-
-    <div class="validation validation-loading" [hidden]="!displayStateLoading">
-      <img src="assets/loading.gif">
+      <div class="validation" [ngClass]="generateForm.controls.name.touched ? (generateForm.controls.name.invalid ? 'validation-error' : 'validation-ok') : ''">
+        {{ (generateForm.controls.name.touched && generateForm.controls.name.invalid) ? "Insert name" : "" }}
+      </div>
     </div>
 
-    <div class="validation"
-        [ngClass]="generateForm.controls.state.touched ? (generateForm.controls.state.invalid || stateSelectionError !== '' ? 'validation-error' : 'validation-ok') : ''">
+    <div class="form-row">
+      <input type="email" class="input-text" placeholder="Email" formControlName="email">
+
+      <div class="validation" [ngClass]="generateForm.controls.email.touched ? (generateForm.controls.email.invalid ? 'validation-error' : 'validation-ok') : ''">
+        {{ (generateForm.controls.email.touched && generateForm.controls.email.invalid) ? "Insert a valid email address" : "" }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <select class="input-select" (change)="StateChanged()" formControlName="state" [ngClass]="generateForm.controls.state.value === '' ? 'input-empty' : ''">
+        <option value="" disabled selected>Select state</option>
+        <option *ngFor="let state of statesList" [value]="state.value">{{ state.label }}</option>
+      </select>
+
+      <div class="validation validation-loading" [hidden]="!displayStateLoading">
+        <img src="assets/loading.gif">
+      </div>
+
+      <div class="validation" [ngClass]="generateForm.controls.state.touched ? (generateForm.controls.state.invalid || stateSelectionError !== '' ? 'validation-error' : 'validation-ok') : ''">
         {{ stateSelectionError }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <select class="input-select" formControlName="time" [ngClass]="generateForm.controls.time.value === '' ? 'input-empty' : ''">
+        <option value="" disabled selected>Select time</option>
+        <option *ngFor="let time of timesList" [value]="time">{{ time }}</option>
+      </select>
+
+      <div class="validation" [ngClass]="generateForm.controls.time.touched ? (generateForm.controls.time.invalid ? 'validation-error' : 'validation-ok') : ''">
+        {{ (generateForm.controls.time.touched && generateForm.controls.time.invalid) ? "Select time" : "" }}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <input type="submit" class="button input-submit" [ngClass]="shouldShakeButton ? 'animated shake': ''" value="Generate" (click)="Generate()">
     </div>
   </div>
+</div>
 
-  <div class="form-row">
-    <select class="input-select"
-            formControlName="time"
-            [ngClass]="generateForm.controls.time.value === '' ? 'input-empty' : ''">
-      <option value="" disabled selected>Select time</option>
-      <option *ngFor="let time of timesList" [value]="time">{{ time }}</option>
-    </select>
+<div [ngClass]="shouldDisplayGeneratedResult ? 'animated bounceIn' : ''" [hidden]="!shouldDisplayGeneratedResult">
+    <div class="title">{{ generateForm.controls.name.value }}, here's a generated tweet for you</div>
 
-    <div class="validation" [ngClass]="generateForm.controls.time.touched ? (generateForm.controls.time.invalid ? 'validation-error' : 'validation-ok') : ''">
-      {{ (generateForm.controls.time.touched && generateForm.controls.time.invalid) ? "Select time" : "" }}
+    <div class="generated-result">
+      {{ generatedResult }}
     </div>
-  </div>
-
-  <div class="form-row">
-    <input type="submit" class="button input-submit" value="Generate" (click)="Generate()">
-  </div>
 </div>
