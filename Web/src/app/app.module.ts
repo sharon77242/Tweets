@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
 import { GenerateComponent } from './generate/generate.component';
+import { LiveMapComponent } from './live-map/live-map.component';
 
 const appRoutes: Routes = [
   // { path: 'hero/:id',      component: HeroDetailComponent },
@@ -17,6 +18,10 @@ const appRoutes: Routes = [
   {
     path: 'Main',
     component: MainComponent
+  },
+  {
+    path: 'LiveMap',
+    component: LiveMapComponent
   },
   {
     path: '',
@@ -30,7 +35,8 @@ const appRoutes: Routes = [
   declarations: [
     AppComponent,
     MainComponent,
-    GenerateComponent
+    GenerateComponent,
+    LiveMapComponent
   ],
   imports: [
     BrowserModule,

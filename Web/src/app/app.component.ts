@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  menuItems = [
+    { title: 'Home', url: '/Main' },
+    { title: 'Generate', url: '/Generate' },
+    { title: 'Live Map', url: '/LiveMap' },
+    { title: 'About', url: '#' }
+  ]
 }

@@ -7,14 +7,8 @@
       </a>
     </div>
     <ul class="menu">
-      <li>
-        <a href="/Main">Home</a>
-      </li>
-      <li>
-        <a href="/Generate">Generate</a>
-      </li>
-      <li>
-        <a href="#">About</a>
+      <li *ngFor="let item of menuItems">
+        <a href="{{ item.url }}">{{ item.title }}</a>
       </li>
     </ul>
   </div>

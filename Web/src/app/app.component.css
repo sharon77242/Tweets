@@ -31,7 +31,7 @@
 }
 
 .menu {
-    width: 250px;
+    width: 350px;
     list-style-type: none;
     display: flex;
     flex-direction: row;
