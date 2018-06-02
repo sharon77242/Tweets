@@ -30,8 +30,17 @@ export class LiveMapComponent implements OnInit {
   private initStatesMarkers(): void {
     const californiaGeoJson: FeatureCollection = <any>californiaJsonFile as FeatureCollection;
     L.geoJSON(californiaGeoJson).addTo(this.map);
+    const californiaPopup = L.popup()
+      .setLatLng([36.778261, -119.41793239999998])
+      .setContent('<p><strong>California</strong><br />This is a California popup.</p>');
+    this.map.addLayer(californiaPopup);
+
 
     const newYorkGeoJson: FeatureCollection = <any>newYorkJsonFile as FeatureCollection;
     L.geoJSON(newYorkGeoJson).addTo(this.map);
+    const newYorkPopup = L.popup()
+      .setLatLng([43.2994285, -74.2179326])
+      .setContent('<p><strong>New York</strong><br />This is a New York popup.</p>');
+    this.map.addLayer(newYorkPopup);
   }
 }
