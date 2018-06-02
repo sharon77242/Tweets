@@ -12,6 +12,7 @@ import * as newYorkJsonFile from 'assets/new-york.json';
 export class LiveMapComponent implements OnInit {
   @ViewChild('leafletDom') leafletDom: ElementRef;
   private map: L.Map;
+  private customIcon: L.Icon;
 
   constructor() { }
 
@@ -24,23 +25,36 @@ export class LiveMapComponent implements OnInit {
       id: 'mapbox.streets'
     }).addTo(this.map);
 
+    const CustomIcon = L.Icon.extend({
+      options: {
+        iconUrl: 'assets/marker-icon.png',
+        iconRetinaUrl: 'assets/marker-icon-2x.png',
+        shadowUrl: 'assets/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+      }
+    });
+
+    this.customIcon = new CustomIcon();
+
     this.initStatesMarkers();
   }
 
   private initStatesMarkers(): void {
     const californiaGeoJson: FeatureCollection = <any>californiaJsonFile as FeatureCollection;
     L.geoJSON(californiaGeoJson).addTo(this.map);
-    const californiaPopup = L.popup()
-      .setLatLng([36.778261, -119.41793239999998])
-      .setContent('<p><strong>California</strong><br />This is a California popup.</p>');
-    this.map.addLayer(californiaPopup);
+    const californiaMarker = L.marker([36.778261, -119.41793239999998], { icon: this.customIcon })
+      .addTo(this.map)
+      .bindPopup('A pretty CSS3 popup.<br> Easily customizable.');
 
 
     const newYorkGeoJson: FeatureCollection = <any>newYorkJsonFile as FeatureCollection;
     L.geoJSON(newYorkGeoJson).addTo(this.map);
-    const newYorkPopup = L.popup()
-      .setLatLng([43.2994285, -74.2179326])
-      .setContent('<p><strong>New York</strong><br />This is a New York popup.</p>');
-    this.map.addLayer(newYorkPopup);
+    const newYorkMarker = L.marker([43.2994285, -74.2179326], { icon: this.customIcon })
+      .addTo(this.map)
+      .bindPopup('A pretty CSS3 popup.<br> Easily customizable.');
   }
 }
