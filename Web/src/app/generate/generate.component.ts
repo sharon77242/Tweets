@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Response } from '@angular/http';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { TweetsService } from '../services/tweets.service';
 
 @Component({
   selector: 'app-generate',
@@ -20,7 +20,7 @@ export class GenerateComponent implements OnInit {
   stateSelectionError = '';
   generatedResult = '';
 
-  constructor(private http: Http) {
+  constructor(private tweetService: TweetsService) {
     this.statesList = [
       { label: 'New York (NY)', value: 'NewYork' },
       { label: 'California (CA)', value: 'California' },
@@ -50,9 +50,7 @@ export class GenerateComponent implements OnInit {
     this.generateForm.controls.time.setValue('');
     this.generateForm.controls.time.disable();
 
-    this.http.get('http://127.0.0.1:5000/' + this.generateForm.controls.state.value).subscribe((res: Response) => {
-      const timesList = JSON.parse(res.text());
-
+    this.tweetService.GetStateTweetsTimes(this.generateForm.controls.state.value, (timesList: Array<string>) => {
       if (!(timesList[0] + '').includes('error')) {
         this.timesList = timesList;
         this.generateForm.controls.time.enable();
@@ -73,18 +71,19 @@ export class GenerateComponent implements OnInit {
         this.shouldShakeButton = false;
       }, 1000);
     } else {
-      this.http.post('http://127.0.0.1:5000/', {
-        country: this.generateForm.controls.state.value,
-        time: this.generateForm.controls.time.value
-      }).subscribe((res: Response) => {
-        this.shouldAnimateForm = true;
-        this.generatedResult = res.text();
-
-        setTimeout(() => {
-          this.shouldHideForm = true;
-          this.shouldDisplayGeneratedResult = true;
-        }, 1000);
-      });
+      this.tweetService.GetTweet(
+        this.generateForm.controls.state.value,
+        this.generateForm.controls.time.value,
+        (generatedResult: string) => {
+          this.shouldAnimateForm = true;
+          this.generatedResult = generatedResult;
+          
+          setTimeout(() => {
+            this.shouldHideForm = true;
+            this.shouldDisplayGeneratedResult = true;
+          }, 1000);
+        }
+      );
     }
   }
 

@@ -46,7 +46,7 @@ export class LiveMapComponent implements OnInit {
   private initStatesMarkers(): void {
     const californiaGeoJson: FeatureCollection = <any>californiaJsonFile as FeatureCollection;
     L.geoJSON(californiaGeoJson).addTo(this.map);
-    const californiaMarker = L.marker([36.778261, -119.41793239999998], { icon: this.customIcon })
+    const californiaMarker = L.marker([36.504750, -119.768142], { icon: this.customIcon })
       .addTo(this.map)
       .bindPopup('A pretty CSS3 popup.<br> Easily customizable.');
 
