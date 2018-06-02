@@ -21,12 +21,7 @@ export class GenerateComponent implements OnInit {
   generatedResult = '';
 
   constructor(private tweetService: TweetsService) {
-    this.statesList = [
-      { label: 'New York (NY)', value: 'NewYork' },
-      { label: 'California (CA)', value: 'California' },
-      { label: 'Los Angeles (LA)', value: 'LosAngeles' }
-    ];
-
+    this.statesList = tweetService.GetStatesList();
     this.timesList = [];
   }
 
@@ -43,24 +38,32 @@ export class GenerateComponent implements OnInit {
   }
 
   StateChanged(): void {
-    this.displayStateLoading = true;
-    this.generateForm.controls.state.disable();
+    this.DisableForm();
     this.stateSelectionError = '';
     this.timesList = [];
     this.generateForm.controls.time.setValue('');
     this.generateForm.controls.time.disable();
 
-    this.tweetService.GetStateTweetsTimes(this.generateForm.controls.state.value, (timesList: Array<string>) => {
-      if (!(timesList[0] + '').includes('error')) {
+    this.tweetService.GetStateTweetsTimes(
+      this.generateForm.controls.state.value,
+      (timesList: Array<string>): void => {
         this.timesList = timesList;
-        this.generateForm.controls.time.enable();
-      } else {
+        this.EnableForm();
+      },
+      (): void => {
         this.stateSelectionError = 'Error. No available tweets for the state';
-      }
+        this.EnableForm();
+      });
+  }
 
-      this.displayStateLoading = false;
-      this.generateForm.controls.state.enable();
-    });
+  private DisableForm(): void {
+    this.displayStateLoading = true;
+    this.generateForm.controls.state.disable();
+  }
+
+  private EnableForm(): void {
+    this.displayStateLoading = false;
+    this.generateForm.controls.state.enable();
   }
 
   Generate(): void {

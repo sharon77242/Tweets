@@ -3,6 +3,7 @@ import * as L from 'leaflet';
 import { FeatureCollection } from 'geojson';
 import * as californiaJsonFile from 'assets/california.json';
 import * as newYorkJsonFile from 'assets/new-york.json';
+import { TweetsService } from '../services/tweets.service';
 
 @Component({
   selector: 'app-live-map',
@@ -14,7 +15,22 @@ export class LiveMapComponent implements OnInit {
   private map: L.Map;
   private customIcon: L.Icon;
 
-  constructor() { }
+  private statesList: Array<{ label: string, value: string }>;
+  private statesCoordinates: any;
+
+  constructor(private tweetsService: TweetsService) {
+    this.statesList = tweetsService.GetStatesList();
+    this.statesCoordinates = {};
+
+    // New York
+    this.statesCoordinates[this.statesList[0].value] = [43.2994285, -74.2179326];
+
+    // California
+    this.statesCoordinates[this.statesList[1].value] = [36.504750, -119.768142];
+
+    // Los Angeles
+    this.statesCoordinates[this.statesList[2].value] = [34.052235, -118.243683];
+  }
 
   ngOnInit() {
     this.map = new L.Map(this.leafletDom.nativeElement).setView([38.6180521,-99.6654538], 3);
@@ -40,21 +56,35 @@ export class LiveMapComponent implements OnInit {
 
     this.customIcon = new CustomIcon();
 
+    this.initStatesPolygons();
+  }
+
+  private initStatesPolygons(): void {
+    const californiaGeoJson: FeatureCollection = <any>californiaJsonFile as FeatureCollection;
+    L.geoJSON(californiaGeoJson).addTo(this.map);
+  
+    const newYorkGeoJson: FeatureCollection = <any>newYorkJsonFile as FeatureCollection;
+    L.geoJSON(newYorkGeoJson).addTo(this.map);
+  
     this.initStatesMarkers();
   }
 
   private initStatesMarkers(): void {
-    const californiaGeoJson: FeatureCollection = <any>californiaJsonFile as FeatureCollection;
-    L.geoJSON(californiaGeoJson).addTo(this.map);
-    const californiaMarker = L.marker([36.504750, -119.768142], { icon: this.customIcon })
-      .addTo(this.map)
-      .bindPopup('A pretty CSS3 popup.<br> Easily customizable.');
+    for (let state of this.statesList) {
+      this.tweetsService.GetStateTweetsTimes(
+        state.value,
+        (timesList: Array<string>): void => {
+          this.tweetsService.GetTweet(state.value, timesList[0], (generatedResult: string): void => {
+            this.createMarkerForState(generatedResult, state.label, timesList[0], this.statesCoordinates[state.value]);
+          })
+        }
+      );
+    }
+  }
 
-
-    const newYorkGeoJson: FeatureCollection = <any>newYorkJsonFile as FeatureCollection;
-    L.geoJSON(newYorkGeoJson).addTo(this.map);
-    const newYorkMarker = L.marker([43.2994285, -74.2179326], { icon: this.customIcon })
+  private createMarkerForState(text: string, stateName: string, time: string, coords: Array<number>): void {
+    const marker = L.marker([coords[0], coords[1]], { icon: this.customIcon })
       .addTo(this.map)
-      .bindPopup('A pretty CSS3 popup.<br> Easily customizable.');
+      .bindPopup(`<strong>${stateName}</strong><br>${text}<br><br>${time}`);
   }
 }
