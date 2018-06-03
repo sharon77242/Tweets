@@ -12,9 +12,9 @@ def callback(ch, method, properties, body):
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
-def run_tweets_receiver(country, cycle_time):
+def run_tweets_receiver(country, cycle_time, queue):
     channel = connect_to_rabbit_mq()
     global file_creator
-    file_creator = FileCreator(channel, country, cycle_time)
+    file_creator = FileCreator(channel, country, cycle_time, queue)
     channel.basic_consume(callback, queue=country + ' ' + TWEETS)
     channel.start_consuming()

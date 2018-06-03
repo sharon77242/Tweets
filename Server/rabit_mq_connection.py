@@ -11,8 +11,7 @@ def get_rabbit_mq_connection():
         return pika.BlockingConnection(parameters)
     except Exception as e:
         print(e)
-        parameters = pika.URLParameters('ERROR : rabbit_mq_connection')
-        return pika.BlockingConnection(parameters)
+        raise e
 
 
 def connect_to_rabbit_mq():
