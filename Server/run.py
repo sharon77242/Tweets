@@ -9,7 +9,7 @@ from tweets_receiver import run_tweets_receiver
 from tweets_file_receiver import run_tweets_file_receiver
 
 if __name__ == "__main__":
-    cycle_time = 60 * 60 * 0.5
+    cycle_time = 60 * 60 * 1
 
     try:
         Process(target=open_server_connection, args=(), name='open_server_connection').start()

@@ -7,7 +7,7 @@ from constants import URL
 
 def get_rabbit_mq_connection():
     try:
-        parameters = pika.ConnectionParameters(URL, heartbeat=0)
+        parameters = pika.ConnectionParameters(URL)
         return pika.BlockingConnection(parameters)
     except Exception as e:
         print(e)
