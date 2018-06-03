@@ -8,9 +8,9 @@ from constants import BEST_TWEETS
 ''' 
 file names example : california_21_04_2018_18_19
                     <country>_day_month_year_hour_minute
-running on port 5000,
-curl http://127.0.0.1:5000/california  ,
-curl -H "Content-Type: application/json" -X POST -d '{"country":"california","time":"21_04_2018_18_19"}' http://127.0.0.1:5000/
+running on port 8080,
+curl http://127.0.0.1:8080/california  ,
+curl -H "Content-Type: application/json" -X POST -d '{"country":"california","time":"21_04_2018_18_19"}' http://127.0.0.1:8080/
 '''
 
 app = Flask(__name__)
@@ -32,7 +32,7 @@ def read_times_on_country_from_file(country):
 
 
 def read_best_tweet_from_file(country, time):
-    with open(BEST_TWEETS + '/' + country + '_' + time, 'r') as tweetFile:
+    with open(BEST_TWEETS + '/' + country + '_' + time + '.txt', 'r') as tweetFile:
         data = tweetFile.read()
         return data.rstrip()
     return 'ERROR - the tweet file doesnt exists its probably still learning'
@@ -52,7 +52,7 @@ def get_best_tweet_for_country_and_time():
 
 
 def open_server_connection():
-    app.run(debug=False)
+    app.run(debug=False, host='0.0.0.0', port=8080)
 
 
 if __name__ == '__main__':
