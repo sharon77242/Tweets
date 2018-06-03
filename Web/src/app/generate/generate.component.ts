@@ -42,7 +42,6 @@ export class GenerateComponent implements OnInit {
     this.stateSelectionError = '';
     this.timesList = [];
     this.generateForm.controls.time.setValue('');
-    this.generateForm.controls.time.disable();
 
     this.tweetService.GetStateTweetsTimes(
       this.generateForm.controls.state.value,
@@ -59,11 +58,16 @@ export class GenerateComponent implements OnInit {
   private DisableForm(): void {
     this.displayStateLoading = true;
     this.generateForm.controls.state.disable();
+    this.generateForm.controls.time.disable();
   }
 
   private EnableForm(): void {
     this.displayStateLoading = false;
     this.generateForm.controls.state.enable();
+
+    if (this.timesList.length > 0) {
+      this.generateForm.controls.time.enable();
+    }
   }
 
   Generate(): void {

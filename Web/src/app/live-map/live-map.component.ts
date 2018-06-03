@@ -4,6 +4,7 @@ import { FeatureCollection } from 'geojson';
 import * as californiaJsonFile from 'assets/california.json';
 import * as newYorkJsonFile from 'assets/new-york.json';
 import { TweetsService } from '../services/tweets.service';
+import { DateFormatPipe } from '../pipes/date-format.pipe';
 
 @Component({
   selector: 'app-live-map',
@@ -18,7 +19,7 @@ export class LiveMapComponent implements OnInit {
   private statesList: Array<{ label: string, value: string }>;
   private statesCoordinates: any;
 
-  constructor(private tweetsService: TweetsService) {
+  constructor(private tweetsService: TweetsService, private dateFormatPipe: DateFormatPipe) {
     this.statesList = tweetsService.GetStatesList();
     this.statesCoordinates = {};
 
@@ -62,21 +63,26 @@ export class LiveMapComponent implements OnInit {
   private initStatesPolygons(): void {
     const californiaGeoJson: FeatureCollection = <any>californiaJsonFile as FeatureCollection;
     L.geoJSON(californiaGeoJson).addTo(this.map);
-  
+
     const newYorkGeoJson: FeatureCollection = <any>newYorkJsonFile as FeatureCollection;
     L.geoJSON(newYorkGeoJson).addTo(this.map);
-  
+
     this.initStatesMarkers();
   }
 
   private initStatesMarkers(): void {
-    for (let state of this.statesList) {
+    for (const state of this.statesList) {
       this.tweetsService.GetStateTweetsTimes(
         state.value,
         (timesList: Array<string>): void => {
           this.tweetsService.GetTweet(state.value, timesList[0], (generatedResult: string): void => {
-            this.createMarkerForState(generatedResult, state.label, timesList[0], this.statesCoordinates[state.value]);
-          })
+            this.createMarkerForState(
+              generatedResult,
+              state.label,
+              this.dateFormatPipe.transform(timesList[0]),
+              this.statesCoordinates[state.value]
+            );
+          });
         }
       );
     }

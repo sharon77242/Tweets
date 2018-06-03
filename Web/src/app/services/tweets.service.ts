@@ -12,9 +12,9 @@ export class TweetsService {
 
   GetStatesList(): Array<{ label: string, value: string }> {
     TweetsService.statesList = [
-      { label: 'New York (NY)', value: 'NewYork' },
-      { label: 'California (CA)', value: 'California' },
-      { label: 'Los Angeles (LA)', value: 'LosAngeles' }
+      { label: 'New York (NY)', value: 'new_york' },
+      { label: 'California (CA)', value: 'california' },
+      { label: 'Los Angeles (LA)', value: 'los_angeles' }
     ];
 
     return TweetsService.statesList;
@@ -28,7 +28,11 @@ export class TweetsService {
     this.httpService.get(this.SERVER_URL + stateName).subscribe((res: Response) => {
       const result = JSON.parse(res.text());
 
-      if (!(result[0] + '').includes('error')) {
+      if (!(result[0] + '').includes('ERROR')) {
+        for (let i = 0; i < result.length; i++) {
+          result[i] = result[i].split('.')[0];
+        }
+
         successCallback(result);
       } else {
         if (errorCallback) {

@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
 import { GenerateComponent } from './generate/generate.component';
 import { LiveMapComponent } from './live-map/live-map.component';
+import { DateFormatPipe } from './pipes/date-format.pipe';
 
 const appRoutes: Routes = [
   // { path: 'hero/:id',      component: HeroDetailComponent },
@@ -36,7 +37,8 @@ const appRoutes: Routes = [
     AppComponent,
     MainComponent,
     GenerateComponent,
-    LiveMapComponent
+    LiveMapComponent,
+    DateFormatPipe
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,9 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    DateFormatPipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
