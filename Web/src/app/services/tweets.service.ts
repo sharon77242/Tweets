@@ -47,7 +47,15 @@ export class TweetsService {
       country: stateName,
       time: time
     }).subscribe((res: Response) => {
-      successCallback(res.text());
+      const result = res.text();
+      successCallback(this.unicodeToChar(result));
     });
+  }
+
+  private unicodeToChar(text): string {
+    return text.replace(/\\u[\dA-F]{4}/gi,
+      (match) => {
+        return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+      });
   }
 }

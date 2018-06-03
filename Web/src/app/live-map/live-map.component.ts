@@ -91,13 +91,6 @@ export class LiveMapComponent implements OnInit {
   private createMarkerForState(text: string, stateName: string, time: string, coords: Array<number>): void {
     const marker = L.marker([coords[0], coords[1]], { icon: this.customIcon })
       .addTo(this.map)
-      .bindPopup(`<strong>${stateName}</strong><br>${this.unicodeToChar(text)}<br><br>${time}`);
-  }
-
-  private unicodeToChar(text): string {
-    return text.replace(/\\u[\dA-F]{4}/gi,
-      (match) => {
-        return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
-      });
+      .bindPopup(`<strong>${stateName}</strong><br>${text}<br><br>${time}`);
   }
 }
