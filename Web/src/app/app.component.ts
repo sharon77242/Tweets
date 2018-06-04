@@ -10,6 +10,6 @@ export class AppComponent {
     { title: 'Home', url: '/Main' },
     { title: 'Generate', url: '/Generate' },
     { title: 'Live Map', url: '/LiveMap' },
-    { title: 'About', url: '#' }
+    { title: 'About', url: '/About' }
   ]
 }

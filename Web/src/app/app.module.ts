@@ -9,6 +9,7 @@ import { MainComponent } from './main/main.component';
 import { GenerateComponent } from './generate/generate.component';
 import { LiveMapComponent } from './live-map/live-map.component';
 import { DateFormatPipe } from './pipes/date-format.pipe';
+import { AboutComponent } from './about/about.component';
 
 const appRoutes: Routes = [
   // { path: 'hero/:id',      component: HeroDetailComponent },
@@ -25,6 +26,10 @@ const appRoutes: Routes = [
     component: LiveMapComponent
   },
   {
+    path: 'About',
+    component: AboutComponent
+  },
+  {
     path: '',
     redirectTo: '/Main',
     pathMatch: 'full'
@@ -38,7 +43,8 @@ const appRoutes: Routes = [
     MainComponent,
     GenerateComponent,
     LiveMapComponent,
-    DateFormatPipe
+    DateFormatPipe,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
