@@ -22,8 +22,12 @@ bestTweet = {
 
 
 def read_times_on_country_from_file(country):
+    files = os.listdir(BEST_TWEETS + '/')
+    files.sort(reverse=True)
     data = []
-    for fileName in os.listdir(BEST_TWEETS + '/'):
+    print(files)
+
+    for fileName in files:
         if country in fileName:
             data.append((fileName.split(country, 1)[1])[1:])
     if data:
