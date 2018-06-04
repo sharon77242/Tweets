@@ -6,7 +6,7 @@ import { Http, Response } from '@angular/http';
 })
 export class TweetsService {
   private static statesList: Array<{ label: string, value: string }>;
-  private readonly SERVER_URL = 'http://193.106.55.145:8080/';
+  private readonly SERVER_URL = 'http://localhost:8080/';
 
   constructor(private httpService: Http) { }
 

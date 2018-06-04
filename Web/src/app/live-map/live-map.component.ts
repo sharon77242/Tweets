@@ -24,13 +24,13 @@ export class LiveMapComponent implements OnInit {
     this.statesCoordinates = {};
 
     // New York
-    this.statesCoordinates[this.statesList[0].value] = [43.2994285, -74.2179326];
+    this.statesCoordinates[this.statesList[0].value] = { coords: [43.2994285, -74.2179326], marker: {}, time: '' };
 
     // California
-    this.statesCoordinates[this.statesList[1].value] = [36.504750, -119.768142];
+    this.statesCoordinates[this.statesList[1].value] = { coords: [36.504750, -119.768142], marker: {}, time: '' };
 
     // Los Angeles
-    this.statesCoordinates[this.statesList[2].value] = [34.052235, -118.243683];
+    this.statesCoordinates[this.statesList[2].value] = { coords: [34.052235, -118.243683], marker: {}, time: '' };
   }
 
   ngOnInit() {
@@ -44,8 +44,8 @@ export class LiveMapComponent implements OnInit {
 
     const CustomIcon = L.Icon.extend({
       options: {
-        iconUrl: 'assets/marker-icon.png',
-        iconRetinaUrl: 'assets/marker-icon-2x.png',
+        iconUrl: 'assets/marker-icon-new.png',
+        iconRetinaUrl: 'assets/marker-icon-2x-new.png',
         shadowUrl: 'assets/marker-shadow.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
@@ -68,6 +68,8 @@ export class LiveMapComponent implements OnInit {
     L.geoJSON(newYorkGeoJson).addTo(this.map);
 
     this.initStatesMarkers();
+
+    setInterval(this.initStatesMarkers.bind(this), 10000);
   }
 
   private initStatesMarkers(): void {
@@ -80,7 +82,8 @@ export class LiveMapComponent implements OnInit {
               generatedResult,
               state.label,
               this.dateFormatPipe.transform(timesList[0]),
-              this.statesCoordinates[state.value]
+              state.value,
+              this.statesCoordinates[state.value].coords
             );
           });
         }
@@ -88,9 +91,27 @@ export class LiveMapComponent implements OnInit {
     }
   }
 
-  private createMarkerForState(text: string, stateName: string, time: string, coords: Array<number>): void {
+  private markerClicked(event: any): void {
+    event.originalEvent.path[0].src = 'assets/marker-icon-2x.png';
+  }
+
+  private createMarkerForState(text: string, stateName: string, time: string, stateValue: string, coords: Array<number>): void {
+    const currentState = this.statesCoordinates[stateValue];
+
+    if (currentState.marker) {
+      if (currentState.time === time) {
+        return;
+      }
+
+      this.map.removeLayer(this.statesCoordinates[stateValue].marker);
+    }
+
     const marker = L.marker([coords[0], coords[1]], { icon: this.customIcon })
       .addTo(this.map)
+      .on('click', this.markerClicked)
       .bindPopup(`<strong>${stateName}</strong><br>${text}<br><br>${time}`);
+
+    this.statesCoordinates[stateValue].marker = marker;
+    this.statesCoordinates[stateValue].time = time;
   }
 }
