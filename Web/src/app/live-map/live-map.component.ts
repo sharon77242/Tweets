@@ -5,6 +5,7 @@ import * as californiaJsonFile from 'assets/california.json';
 import * as newYorkJsonFile from 'assets/new-york.json';
 import { TweetsService } from '../services/tweets.service';
 import { DateFormatPipe } from '../pipes/date-format.pipe';
+import { StateModel } from '../models/state.model';
 
 @Component({
   selector: 'app-live-map',
@@ -24,17 +25,17 @@ export class LiveMapComponent implements OnInit {
     this.statesCoordinates = {};
 
     // New York
-    this.statesCoordinates[this.statesList[0].value] = { coords: [43.2994285, -74.2179326], marker: {}, time: '' };
+    this.statesCoordinates[this.statesList[0].value] = new StateModel([43.2994285, -74.2179326]);
 
     // California
-    this.statesCoordinates[this.statesList[1].value] = { coords: [36.504750, -119.768142], marker: {}, time: '' };
+    this.statesCoordinates[this.statesList[1].value] = new StateModel([36.504750, -119.768142]);
 
     // Los Angeles
-    this.statesCoordinates[this.statesList[2].value] = { coords: [34.052235, -118.243683], marker: {}, time: '' };
+    this.statesCoordinates[this.statesList[2].value] = new StateModel([34.052235, -118.243683]);
   }
 
   ngOnInit() {
-    this.map = new L.Map(this.leafletDom.nativeElement).setView([38.6180521,-99.6654538], 3);
+    this.map = new L.Map(this.leafletDom.nativeElement).setView([38.6180521, -99.6654538], 3);
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
       maxZoom: 18,
@@ -99,7 +100,7 @@ export class LiveMapComponent implements OnInit {
     const currentState = this.statesCoordinates[stateValue];
 
     if (currentState.marker) {
-      if (currentState.time === time) {
+      if (currentState.time && currentState.time  === time) {
         return;
       }
 
